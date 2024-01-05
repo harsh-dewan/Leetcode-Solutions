@@ -1,0 +1,58 @@
+class Solution {
+
+    public int[] getPGMCount(String str) {
+        int[] count = new int[3];
+        int index = 0, size  = str.length();
+        while( index < size ) {
+            char ch = str.charAt(index++);
+            if( ch == 'G') count[0] += 1;
+            else if( ch == 'M' ) count[1] += 1;
+            else count[2]+= 1;
+        }
+        return count;
+    }
+    public int garbageCollection(String[] garbage, int[] travel) {
+        
+        int[] G = new int[garbage.length];
+        int[] M = new int[garbage.length];
+        int[] P = new int[garbage.length];
+        int garbageLength = garbage.length;
+        for(int i = 0; i < garbageLength; i++ ){
+            int[] eachCount = getPGMCount(garbage[i]);
+            if( eachCount.length == 3 ) {
+                G[i] += eachCount[0];
+                M[i] += eachCount[1];
+                P[i] += eachCount[2];
+            }
+        }
+        int gIndex=-1, mIndex=-1, pIndex=-1;
+        for(int i = garbageLength-1; i>=0; i-- ) {
+            if( gIndex == -1 && G[i] > 0 ) gIndex = i;
+            if( mIndex == -1 && M[i] > 0 ) mIndex = i;
+            if( pIndex == -1 && P[i] > 0 ) pIndex = i;
+        }
+        if( gIndex == -1 ) gIndex = 0;
+        if( mIndex == -1 ) mIndex = 0;
+        if( pIndex == -1 ) pIndex = 0;
+        int totalMin = 0;
+        int sum = 0,tLength=travel.length;
+        for(int  i = 0; i <= gIndex; i++ ) {
+            sum += G[i];
+            if( i < tLength && (i+1) <= gIndex ) sum += travel[i];
+        }
+        totalMin += sum;
+        sum = 0;
+        for(int  i = 0; i <= mIndex; i++ ) {
+            sum += M[i];
+            if( i < tLength && (i+1) <= mIndex) sum += travel[i];
+        }
+        totalMin += sum;
+        sum = 0;
+        for(int  i = 0; i <= pIndex; i++ ) {
+            sum += P[i];
+            if( i < tLength && (i+1) <= pIndex ) sum += travel[i];
+        }
+        totalMin += sum;
+        return totalMin;
+    }
+}
