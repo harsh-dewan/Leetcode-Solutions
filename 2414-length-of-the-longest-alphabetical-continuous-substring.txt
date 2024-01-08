@@ -1,0 +1,17 @@
+class Solution {
+    public int longestContinuousSubstring(String s) {
+        int maxSubstring=1;
+        int strLength = s.length();
+        int[] dp = new int[strLength];
+        dp[0] = 1;
+        maxSubstring = 1;
+        for(int i = 1; i < strLength; i++ ) {
+            int currIndex = s.charAt(i)-'a';
+            int prevIndex = s.charAt(i-1) - 'a';
+            if( currIndex == prevIndex+1) dp[i] = dp[i-1]+1;
+            else dp[i] = 1;
+            maxSubstring = Integer.max(maxSubstring, dp[i]);
+        }
+        return maxSubstring;
+    }
+}
