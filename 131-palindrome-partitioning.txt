@@ -1,0 +1,42 @@
+class Solution {
+    List<List<String>> finalList = null;
+
+    public boolean isPalindrome(String str) {
+        if( str.length() == 1 ) return true;
+        int low  = 0, high = str.length() - 1;
+        while( low < high ) {
+            if( str.charAt(low) != str.charAt(high) ) return false;
+            low += 1;
+            high -= 1;
+        }
+        return true;
+    }
+
+    public void computeAllPalindromicSubstrings(int start, int end, String str, 
+                                                ArrayList<String> arrList, int count)  {
+        if( start > end ) {
+            if( count ==  str.length()) finalList.add(new ArrayList<String>(arrList));
+            return;
+        }
+        for(int i = start; i <=  end; i++ ) {
+            for( int j = i; j <= end; j++ ) {
+                String tempString = "";
+                if( j+1 <= end ) tempString = str.substring(i,j+1);
+                else tempString = str.substring(i);
+                //System.out.println("temPString: "+tempString);
+                if( isPalindrome(tempString) == true ) {
+                    arrList.add(tempString);
+                    computeAllPalindromicSubstrings(j+1, end, str, arrList,count+tempString.length());
+                    arrList.remove(tempString);
+                }
+                //else return;
+            }
+        }
+        return;
+    }
+    public List<List<String>> partition(String s) {
+        finalList = new ArrayList<List<String>>();
+        computeAllPalindromicSubstrings(0, s.length()-1, s, new ArrayList<String>(),0);
+        return finalList;
+    }
+}

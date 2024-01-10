@@ -1,0 +1,70 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    //startNode - pointer to start node
+    //HashMap for storing the parent node of each  node
+    //hashMap to check if the node is already  infected or not
+    //tracking the minute required
+     /*
+     1. we need to update the parent of the nodes and we need the pointer of the start node as well.
+     2. we also need to update the hashMap 'infected' to set to false to all nodes intially.
+     3. then recursively we will start with the startNode and traverse the left, right and parent Node.
+    */
+    HashMap<TreeNode,Boolean> infected = null;
+    HashMap<TreeNode, TreeNode> parentNodes = null;
+    int maxTime = 0;
+    TreeNode startNode = null;
+
+    /*
+    this function does 3 tasks:
+        1. updates the parent node for each node
+        2. updates the startNode
+        3. update the infected hashMap
+    */
+    public void updateParentNodes(TreeNode root, TreeNode parent, int start) {
+        if( root == null ) return;
+        if( startNode == null && root.val == start ) startNode = root;
+        infected.put(root, false);
+        parentNodes.put(root, parent);
+        updateParentNodes(root.left, root, start);
+        updateParentNodes(root.right, root, start);
+        return;
+    }
+
+    public void propagateInfection(TreeNode startNode, int min) {
+        if( startNode == null ) return;
+        infected.put(startNode,true);
+        maxTime = Integer.max(maxTime, min);
+        TreeNode parentNode = parentNodes.get(startNode);
+        if( parentNode != null && infected.get(parentNode) == false ) propagateInfection(parentNode, min+1);
+        if( startNode.left != null && infected.get(startNode.left) == false ) propagateInfection(startNode.left, min+1);
+        if( startNode.right != null && infected.get(startNode.right) == false ) propagateInfection(startNode.right, min+1);
+        return;
+    }
+
+    public int amountOfTime(TreeNode root, int start) {
+
+        if( root == null || 
+            (root.left == null &&  root.right == null) ) return 0;
+        infected = new HashMap<TreeNode,Boolean>();
+        parentNodes = new HashMap<TreeNode, TreeNode>();
+        maxTime = 0;
+        startNode = null;
+        updateParentNodes(root,null, start);
+        propagateInfection(startNode, 0);
+        return maxTime;
+    }
+}
