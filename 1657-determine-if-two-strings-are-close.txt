@@ -1,0 +1,40 @@
+class Solution {
+    int[] count1=null, count2=null;
+
+    public boolean checkSecondOperation(int index, int end) {
+        if( index >= 26 ) return true;
+        if( count1[index] == count2[index] ) {
+            count1[index] = 0;
+            return checkSecondOperation(index+1, end);
+        }
+        int want = count2[index];
+        for(int i = 0; i < 26 ; i++ ) {
+            if( count1[i] == want ) {
+                count1[i] = count1[index];
+                count1[index] = 0;
+                if( checkSecondOperation(index+1, end) == true ) return true;
+                count1[index]  = count1[i];
+                count1[i] = want;
+            }
+        }
+        return false;
+    }
+
+    public boolean closeStrings(String word1, String word2) {
+        int word1length = word1.length();
+        int word2length = word2.length();
+        if( word1length != word2length ) return false;
+        count1 = new int[26];
+        count2 = new int[26];
+        for(int i = 0; i < word1length; i++) count1[word1.charAt(i) - 'a'] += 1;
+        for(int i = 0; i < word2length; i++) count2[word2.charAt(i) - 'a'] += 1;
+        boolean operation2 = false;
+        for(int i = 0; i < 26; i++ ) {
+            if( count1[i] == count2[i] ) continue;
+            else if( count1[i] == 0 || count2[i] == 0 ) return false;
+            else operation2=true;
+        }
+        if( operation2 == true ) return checkSecondOperation(0, word1length);
+        return true;
+    }
+}
