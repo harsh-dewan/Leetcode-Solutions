@@ -1,0 +1,16 @@
+class Solution {
+    int[] dp = null;
+
+    public int computeSteps(int num){
+        if(dp[num] > 0 ) return dp[num];
+        return dp[num] = computeSteps(num-2)+computeSteps(num-1);
+    }
+
+    public int climbStairs(int n) {
+        dp = new int[46];
+        dp[1] = 1;
+        dp[2] = 2;
+        computeSteps(n);
+        return dp[n];
+    }
+}
