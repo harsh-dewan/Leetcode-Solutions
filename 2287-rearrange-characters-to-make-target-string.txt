@@ -1,0 +1,22 @@
+class Solution {
+    public int rearrangeCharacters(String s, String target) {
+        int[] scount = new int[26];
+        int[] tcount = new int[26];
+        int strlength = s.length();
+        int targetlength = target.length();
+        int  minPossible = -1;
+        for(int i = 0; i < strlength; i++) scount[s.charAt(i)-'a'] += 1;
+        for(int i = 0; i < targetlength; i++) tcount[target.charAt(i)-'a']+=1;
+        for(int i = 0; i < 26; i++ ) {
+            if( scount[i] == 0 && tcount[i] == 0 ) continue;
+            if( tcount[i] == 0 ) continue;
+            if( scount[i] == 0 ) return 0;
+            int required = tcount[i];
+            int wehave = scount[i];
+            int count = wehave/required;
+            if( minPossible == -1) minPossible = count;
+            else minPossible = Integer.min(minPossible, count);
+        }
+        return minPossible;
+    }
+}
