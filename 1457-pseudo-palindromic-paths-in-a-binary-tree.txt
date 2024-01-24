@@ -1,0 +1,60 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    int count = 0;
+    int[] temp = null;
+
+    public void checkForPalindrom(int totalNodes) {
+        //oddLength
+        int oneCount =0, twoCount=0;
+        if( totalNodes%2 != 0 ) {
+            for(int i = 1; i <= 9; i++ ) {
+                if( temp[i] > 0 && temp[i]%2 ==  1 ) oneCount += 1;
+                if( oneCount > 0 && oneCount != 1 ) return;
+            }
+            count +=1;
+            return;
+        }
+        //evenLength
+        for(int i = 1; i <= 9; i++ ) {
+                if( temp[i] > 0 && temp[i]%2 != 0 ) return;
+        }
+        count +=1;
+        return;
+    }
+
+    public void computeTotalPseudopalindromic(TreeNode root, int totalNodes) {
+        if(root == null ) return;
+        if( root.left == null && root.right == null ) {
+            temp[root.val] += 1;
+            checkForPalindrom(totalNodes+1);
+            temp[root.val] -= 1;
+            return;
+        }
+        temp[root.val] += 1;
+        computeTotalPseudopalindromic(root.left,totalNodes+1);
+        computeTotalPseudopalindromic(root.right,totalNodes+1);
+        temp[root.val] -= 1;
+        return;
+    }
+    public int pseudoPalindromicPaths (TreeNode root) {
+        count = 0;
+        if( root == null ) return count;
+        temp = new int[11];
+        computeTotalPseudopalindromic(root,0);
+        return count;
+    }
+}
