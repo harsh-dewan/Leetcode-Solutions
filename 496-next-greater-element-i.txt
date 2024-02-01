@@ -1,0 +1,18 @@
+class Solution {
+    public int[] nextGreaterElement(int[] nums1, int[] nums2) {
+        HashMap<Integer,Integer> mapNGE = new HashMap<Integer,Integer>();
+        Stack<Integer> monotonic = new Stack<Integer>();
+        int num1Length = nums1.length;
+        int num2Length = nums2.length;
+        int[] arr = new int[num1Length];
+        for(int i = num2Length-1; i >= 0; i--) {
+            int curr = nums2[i];
+            while( monotonic.size() > 0  && monotonic.peek() <= curr ) monotonic.pop();
+            if( monotonic.size() == 0 ) mapNGE.put(curr,-1);
+            else mapNGE.put(curr,monotonic.peek());
+            monotonic.push(curr);
+        }
+        for(int i = 0; i < num1Length; i++) arr[i] = mapNGE.get(nums1[i]);
+        return arr;
+    }
+}

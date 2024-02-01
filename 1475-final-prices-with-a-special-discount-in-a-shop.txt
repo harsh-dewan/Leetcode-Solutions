@@ -1,0 +1,15 @@
+class Solution {
+    public int[] finalPrices(int[] prices) {
+        Stack<Integer> stack = new Stack<Integer>();
+        int priceLength = prices.length;
+        int[] discount = new int[priceLength];
+        for(int i = priceLength-1; i >= 0 ; i-- ) {
+            int curr = prices[i];
+            while( stack.size() > 0 && stack.peek() > curr ) stack.pop();
+            if( stack.size() == 0 ) discount[i] = curr;
+            else discount[i]  = curr - stack.peek();
+            stack.push(curr);
+        }
+        return discount;
+    }
+}
