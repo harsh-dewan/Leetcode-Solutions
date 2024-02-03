@@ -1,0 +1,23 @@
+class Solution {
+    public int maxSumAfterPartitioning(int[] arr, int k) {
+        if( arr == null || arr.length == 0 )  return 0;
+        int totalMax = 0;
+        int arrLength = arr.length;
+        int[] dp = new int[arrLength];
+        dp[arrLength-1] = arr[arrLength-1];
+        for(int i = arrLength-2; i >= 0; i--) {
+            int currSum = 0,maxSum=0;
+            for(int j = 0; j < k; j++ ) {
+                if(i+j  < arrLength ) {
+                    currSum = Integer.max(currSum, arr[i+j]);
+                    int totalSum = (j+1)*currSum;
+                    if( i+j+1 < arrLength) maxSum = Integer.max(maxSum, totalSum+dp[i+j+1]);
+                    else maxSum = Integer.max(maxSum, totalSum);
+                }
+               // index+=1;
+            }
+            dp[i] = maxSum;
+        }
+        return dp[0];
+    }
+}
