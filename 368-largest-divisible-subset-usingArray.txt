@@ -1,0 +1,36 @@
+class Solution {
+    ArrayList<Integer> arrList = null;
+    int[] dp = null;
+
+    public List<Integer> largestDivisibleSubset(int[] arr) {
+        if( arr == null || arr.length == 0 ) return null;
+        Arrays.sort(arr);
+        arrList = new ArrayList<Integer>();
+        int arrLength =  arr.length;
+        dp = new int[arrLength];
+        dp[arrLength - 1] = 1;
+        int[] nextIndex = new int[arrLength];
+        nextIndex[arrLength-1] = -1;
+        int globalMax = 1;
+        int startIndex = -1;
+        for(int i = arrLength-1; i >= 0; i --) {
+            dp[i] = 1;
+            for(int j = i+1; j < arrLength; j++ ) {
+                if( arr[j]%arr[i] == 0 && dp[i] < (1+dp[j]) ) {
+                    dp[i] = 1+dp[j];
+                    nextIndex[i] = j;
+                }
+            }
+            if( dp[i] == 1) nextIndex[i] = -1;
+            if( globalMax <= dp[i] ) {
+                globalMax = dp[i];
+                startIndex = i;
+            }
+        }
+        while( startIndex != -1) {
+            arrList.add(arr[startIndex]);
+            startIndex = nextIndex[startIndex];
+        }
+        return arrList;
+    }
+}
