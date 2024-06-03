@@ -1,0 +1,70 @@
+import java.lang.*;
+import java.util.*;
+
+class Solution {
+    int[] dp = null;
+    int maxLength = 1;
+
+    public boolean checkIfPredecessor(String str1, String  str2) {
+        //two condition for predecessor
+        /*
+        1. relative order of the characters must be same
+        2. only one character must differ
+        */
+        int str1length = str1.length();
+        int str2length = str2.length();
+        
+        if( str2length != str1length+1 ) return false;
+        int index1 =0, index2=0;
+        while( index1 < str1length && index2 < str2length ) {
+            char ch1 = str1.charAt(index1);
+            char ch2 = str2.charAt(index2);
+            if( ch1 == ch2 ) {
+                index1 += 1;
+                index2 += 1;
+            }
+            else {
+                if( (str1.substring(index1).equals(str2.substring(index2+1))) || 
+                    (str1.substring(index1+1).equals(str2.substring(index2))) ) return true;
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public int computeMaxLengthStringChain(String[] arr, int start, int end) {
+
+        if( start > end ) return 0;
+        if( dp[start] > 0 ) return dp[start];
+        int maxAtThisPoint = 1;
+        for(int i = start+1; i <= end ; i++) {
+            if( checkIfPredecessor(arr[start],arr[i]) ) //check for predecessor
+            {
+                maxAtThisPoint = Integer.max(
+                                maxAtThisPoint,
+                                1+computeMaxLengthStringChain(arr, i, end));
+            }
+        }
+        return dp[start] = maxAtThisPoint;
+    }
+
+    public int longestStrChain(String[] arr) {
+        if( arr.length ==  1 ) return 1;
+        Comparator<String> lengthComparator = new Comparator<String>() { 
+    		@Override     
+			public int compare(String o1, String o2) { 
+        		return Integer.compare(o1.length(), o2.length()); 
+    		} 
+		}; 
+ 
+		//Sort the array 
+		Arrays.sort(arr, lengthComparator); 
+        maxLength = 1;
+        int arrLength = arr.length;
+        dp = new int[arrLength];
+        for(int index=0; index < arrLength; index++) {
+            maxLength = Integer.max(maxLength,computeMaxLengthStringChain(arr, index, arrLength-1));
+        }
+        return maxLength;    
+    }
+}

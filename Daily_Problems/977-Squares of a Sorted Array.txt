@@ -1,0 +1,46 @@
+class Solution {
+    public int[] sortedSquares(int[] nums) {
+        int index = -1;
+        int numsLength = nums.length;
+        for(int i = 0; i < numsLength; i++ ) {
+            if( nums[i] >= 0 ) {index = i; break;}
+        }
+        if( index == 0 ) {
+            for(int i = 0; i < numsLength; i++ ) {
+                nums[i] = (nums[i]*nums[i]);
+            }
+            return nums;
+        }
+        else if( index == -1 ) {
+            for(int i = 0; i < numsLength; i++ ) nums[i] = -1*nums[i];
+            int ptr1 = 0, ptr2 = numsLength-1;
+            while( ptr1 <= ptr2 )  {
+                int temp = nums[ptr1];
+                nums[ptr1] = nums[ptr2];
+                nums[ptr2] = temp;
+                ptr2 -= 1;
+                ptr1 += 1;
+            }
+            for(int i = 0; i < numsLength; i++ ) {
+                nums[i] = (nums[i]*nums[i]);
+            }
+            return nums;
+        }
+        else {
+            for(int i = 0; i < index; i++ ) nums[i] = -1*nums[i];
+            int[] ans = new int[numsLength];
+            int i1 = index-1, i2=index, i3=0;
+            while( i1 >= 0  && i2 < numsLength ) {
+                if( nums[i1] <= nums[i2]) ans[i3++] = nums[i1--];
+                else ans[i3++] = nums[i2++];
+            }
+            while( i1 >= 0 ) ans[i3++] = nums[i1--];
+            while( i2 < numsLength )   ans[i3++] = nums[i2++];
+            for(int i = 0; i < numsLength; i++ ) {
+                ans[i] = (ans[i]*ans[i]);
+            }
+            return ans;
+        }
+       
+    }
+}

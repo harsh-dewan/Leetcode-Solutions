@@ -1,0 +1,45 @@
+class Solution {
+    
+    int[] maxProfit, start = null, end = null, jobProfit = null;
+    int totalJobs = 0, totalProfit = 0;
+
+    public int computeMaxProfit(int index) {
+        if( maxProfit[index] != 0 ) return maxProfit[index];
+        int maxProfitFromHere = 0;
+        for(int i = index+1; i < totalJobs; i++ ) {
+            if( start[i] >= end[index] ) {
+                maxProfitFromHere = Integer.max(maxProfitFromHere, 
+                        computeMaxProfit(i));
+            }
+        }
+        return maxProfit[index] = jobProfit[index]+maxProfitFromHere;
+    }
+
+    public int jobScheduling(int[] startTime, int[] endTime, int[] profit) {
+        
+        totalJobs = profit.length;
+        int[][] jobs2D = new int[totalJobs][3];
+        for(int i = 0; i < totalJobs; i++ ) {
+            jobs2D[i] = new int[]{startTime[i],endTime[i],profit[i]};
+        }
+        Arrays.sort(jobs2D,(a,b)-> a[0]-b[0]);
+        start = startTime;
+        end = endTime;
+        jobProfit = profit;
+        for(int i = 0; i < totalJobs;i++){
+            start[i] = jobs2D[i][0];
+            end[i] = jobs2D[i][1];
+            jobProfit[i] = jobs2D[i][2];
+        }
+        maxProfit = new int[totalJobs];
+        totalProfit = 0;
+        //for(int i = 0 ; i < totalJobs; i++) maxProfit[i] = -1;
+        maxProfit[totalJobs-1] = profit[totalJobs-1];
+        totalProfit = maxProfit[0];
+        for(int i = 0; i < totalJobs; i++) {
+            if(maxProfit[i] == 0) computeMaxProfit(i);
+            totalProfit = Integer.max(totalProfit, maxProfit[i]);
+        }
+        return totalProfit;
+    }
+}
