@@ -1,0 +1,22 @@
+class Solution {
+    public int appendCharacters(String s, String t) {
+        int strlength =  s.length();
+        int tlength = t.length();
+        int count = 0;
+        int sindex=0, tindex=0;
+	/*
+	we will keep on looking for first mismatch charcater, then we exit the loop and count the remaining characters from the t to be matched.
+	*/
+        while( sindex < strlength && tindex < tlength ) {
+            if( s.charAt(sindex) == t.charAt(tindex) ) {
+                sindex++;
+                tindex++;
+            }
+            else {
+                sindex++;
+            }
+        }
+        count += (tlength-tindex);
+        return count;
+    }
+}
