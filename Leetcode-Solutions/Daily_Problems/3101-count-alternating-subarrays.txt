@@ -1,0 +1,16 @@
+class Solution {
+    public long countAlternatingSubarrays(int[] nums) {
+        
+        long sum = 1 ;
+        int[] tot_alt = new int[nums.length];
+        int numslength = nums.length;
+        tot_alt[0] = 1;
+        for(int i  = 1; i < numslength; i++ ) {
+            if( nums[i] != nums[i-1]) tot_alt[i]  = 1 + tot_alt[i-1];
+            else tot_alt[i] = 1;
+            sum += tot_alt[i];
+        }
+        return sum;
+        
+    }
+}

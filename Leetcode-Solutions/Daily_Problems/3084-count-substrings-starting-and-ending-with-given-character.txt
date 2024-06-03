@@ -1,0 +1,17 @@
+class Solution {
+    public long countSubstrings(String s, char c) {
+        
+        
+        long ans = 0;
+        int strlength = s.length();
+        int count = 0;
+        for(int i = 0; i < strlength; i++ ) {
+            if( s.charAt(i) == c) {
+                count +=1;
+                ans += count;
+            }
+        }
+        return ans;
+        
+    }
+}

@@ -1,0 +1,18 @@
+class Solution {
+    public int[] pivotArray(int[] nums, int pivot) {
+        if( nums == null || nums.length == 0 ) return nums;
+        int lcount = 0, gcount = 0, length = nums.length;
+        int lindex= 0, gindex = length-1;
+        int[] arr = new int[length];
+        for(int i = 0; i < length; i++ ) {
+            if( nums[i] < pivot ) arr[lindex++] = nums[i];
+        }
+        for(int i = length-1; i >=0; i-- ) {
+            if( nums[i] > pivot ) arr[gindex--] = nums[i];
+        }
+        for(int i = lindex; i >= 0 && i <= length -1 && i <= gindex; i++ ) {
+            arr[i] = pivot;
+        }
+        return arr;
+    }
+}

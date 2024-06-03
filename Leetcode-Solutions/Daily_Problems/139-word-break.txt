@@ -1,0 +1,27 @@
+class Solution {
+
+    int[] dp = null;
+    public boolean checkwordbreak(String str, List<String> dict, 
+                                         int start, int end, String currstr) {
+        if( start > end ) return true;
+        if( dp[start] != -1 )  return dp[start] == 0 ? false : true;
+        String temp = currstr;
+        for(int i = start; i <= end; i++) {
+            temp = temp + str.charAt(i);
+            if( dict.contains(temp) == true  ) {
+                 if(checkwordbreak(str, dict, i+1, end, currstr)) {
+                     dp[start] =  1;
+                     return true;
+                 }
+            }
+        }
+        dp[start] = 0;
+        return false;
+    }
+    public boolean wordBreak(String s, List<String> wordDict) {
+        int slength =  s.length();
+        dp = new int[slength];
+        for(int i = 0; i < slength; i++ ) dp[i] = -1;
+        return checkwordbreak(s, wordDict, 0, slength-1, "");
+    }
+}

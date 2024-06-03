@@ -1,0 +1,29 @@
+class Solution {
+    public static String[] numberPad = new String[]{"","","abc",
+                                                   "def","ghi",
+                                                   "jkl","mno",
+                                                   "pqrs","tuv","wxyz"};
+
+    public static List<String> finalList =  null;
+
+    public static void generateAllStrings(String str, int strLength, int index,String newString) {
+        if( index == strLength ) {
+            finalList.add(newString);
+            return;
+        }
+        String expectedStr = numberPad[str.charAt(index)-'0'];
+        int expectedStrLength = expectedStr.length();
+        for(int i = 0; i < expectedStrLength; i++ ) {
+            char ch =  expectedStr.charAt(i);
+            generateAllStrings(str, strLength, index+1, newString+ch);
+        }
+        return;
+    }
+
+    public List<String> letterCombinations(String digits) {
+        if( digits == null || digits.length() == 0 ) return new ArrayList<String>();
+        finalList = new ArrayList<String>();
+        generateAllStrings(digits, digits.length(), 0,"");
+        return finalList;
+    }
+}
