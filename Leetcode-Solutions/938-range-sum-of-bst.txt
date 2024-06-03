@@ -1,0 +1,16 @@
+	class Solution {
+	int result = 0;
+
+	public void computeRangeSum(TreeNode root, int low, int high ) {
+		if( root == null ) return;
+		if( root.val >= low && root.val <= high ) result += root.val;
+		computeRangeSum(root.left, low, high);
+		computeRangeSum(root.right, low, high);
+		return;
+	}
+	public int rangeSumBST(TreeNode root, int low, int high) {
+		result = 0;
+		computeRangeSum(root, low, high);
+		return result;
+	}
+}

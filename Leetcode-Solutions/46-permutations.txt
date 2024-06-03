@@ -1,0 +1,36 @@
+class Solution {
+
+    ArrayList<List<Integer>> arrList = null;
+    HashMap<Integer,Boolean> map = null;
+
+    public void generateAllPossibleArr(int[] nums, int index, int numLength, int[] newArr )  {
+        if( index == numLength ) {
+            ArrayList<Integer> temp = new ArrayList<Integer>();
+            for(int i = 0; i < numLength; i++) temp.add(newArr[i]);
+            arrList.add(temp);
+            return;
+        }
+        for(int i = 0; i < numLength; i++ ) {
+            if( map.get(nums[i]) == false  ) {
+                newArr[index] = nums[i];
+                map.put(nums[i],true);
+                generateAllPossibleArr(nums, index+1, numLength, newArr);
+                map.put(nums[i],false);
+                newArr[index] = -1;
+            }
+        }
+        return;
+    }
+
+    public List<List<Integer>> permute(int[] nums) {
+        if( nums ==  null || nums.length == 0 ) return null;
+        arrList = new ArrayList<List<Integer>>();
+        map = new HashMap<Integer,Boolean>();
+        int numLength = nums.length;
+        for(int i = 0; i < numLength; i++ ) map.put(nums[i],false);
+        int[] newArray = new int[numLength];
+        generateAllPossibleArr(nums, 0, numLength, newArray);
+        return arrList;
+
+    }
+}

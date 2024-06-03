@@ -1,0 +1,28 @@
+class Solution {
+
+    public int computeMaxFromCurrIndex(int[] arr, int[] nums, int start, int end) {
+        if( arr[start] != -1 ) return arr[start];
+        if( start == end-1) return arr[start] =  1;
+        int maxCount = 1;
+        for(int i = start+1; i < end; i++) {
+            if( nums[i] > nums[start]) {
+                maxCount = Integer.max(maxCount, 1+computeMaxFromCurrIndex(arr,nums,i,end));
+            }
+        }
+        return arr[start] = maxCount;
+    }
+
+    public int lengthOfLIS(int[] nums) {
+        if( nums == null  ) return 0;
+        int numLength = nums.length;
+        if( numLength == 0 || numLength == 1 ) return nums.length;
+        int[] save = new int[numLength];
+        for(int i = 0 ; i < numLength; i++ )  save[i] = -1;
+        int maxAns = 0;
+        for(int i = 0; i < numLength; i++ ) {
+            maxAns = Integer.max(maxAns, 
+                                 computeMaxFromCurrIndex(save, nums,i, numLength));
+        }
+        return maxAns;
+    }
+}

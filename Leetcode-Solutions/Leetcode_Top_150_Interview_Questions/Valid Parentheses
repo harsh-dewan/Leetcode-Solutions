@@ -1,0 +1,33 @@
+class Solution {
+    public boolean isValid(String s) {
+
+        if(s.length() == 0 ) return true;
+        Stack<Character> stck = new Stack<Character>();
+        int index = 0;
+        while(index < s.length()) {
+            if(stck.empty() == true ) {
+                stck.push(s.charAt(index));
+            }
+            else if( s.charAt(index) == '(' ||
+                     s.charAt(index) == '[' ||
+                     s.charAt(index) == '{'  ) {
+                stck.push(s.charAt(index));
+            }
+            else if( s.charAt(index) == ')' && stck.peek() =='(' ) {
+                stck.pop();
+            }
+            else if( s.charAt(index) == ']' && stck.peek() =='[' ) {
+                stck.pop();
+            }
+            else if( s.charAt(index) == '}' && stck.peek() =='{' ) {
+                stck.pop();
+            }
+            else {
+                stck.push(s.charAt(index));
+            }
+            index += 1;
+        }
+        if( stck.empty() == false ) return false;
+        return true;
+    }
+}

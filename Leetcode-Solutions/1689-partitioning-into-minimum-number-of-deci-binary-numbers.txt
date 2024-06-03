@@ -1,0 +1,9 @@
+class Solution {
+    public int minPartitions(String n) {
+        if( n.equals("1")) return 1;
+        int maxNum = -1;
+        int index = 0, strLength = n.length();
+        while(index < strLength ) maxNum = Integer.max(maxNum, (n.charAt(index++)-'0'));
+        return maxNum;
+    }
+}

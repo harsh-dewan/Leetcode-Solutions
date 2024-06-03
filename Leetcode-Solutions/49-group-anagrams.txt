@@ -1,0 +1,42 @@
+import java.util.* ;
+import java.io.*; 
+import java.util.ArrayList;
+
+public class Solution {
+
+	public static HashMap<String,ArrayList<String>> anagramMap = null;
+
+	public static String computeAnagramString(String inputStr) {
+		if( inputStr == "" || inputStr.length() == 0 ) return "";
+		int[] count = new int[26];
+		int inputLength = inputStr.length();
+		for(int i = 0; i < inputLength; i++ ) count[inputStr.charAt(i)-'a'] += 1;
+		String newString="";
+		for(int i = 0; i < 26;i++) {
+			char ch = (char)('a'+i);
+			int totalCount  = count[i];
+			newString = newString + ch + "" + String.valueOf(totalCount);  
+		}
+		return newString;
+	}
+	public static ArrayList<ArrayList<String>> 
+		groupAnagramsTogether(ArrayList<String> strList) {
+		// Write your code here.
+		anagramMap = new HashMap<String,ArrayList<String>>();
+		int listSize =  strList.size();
+		ArrayList<ArrayList<String>> finalList = new ArrayList<ArrayList<String>>();
+		for(int i = 0; i < listSize; i++ ) {
+			String anagramStr = computeAnagramString(strList.get(i));
+			//System.out.println()
+			ArrayList<String> arrList = anagramMap.getOrDefault(anagramStr, new ArrayList<String>());
+			arrList.add(strList.get(i));
+			anagramMap.put(anagramStr,arrList);
+		}
+		//traversing Map
+		for (Map.Entry<String,ArrayList<String>> entry : anagramMap.entrySet()) {
+			finalList.add(entry.getValue());
+		}
+		return finalList;
+
+	}
+}

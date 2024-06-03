@@ -1,0 +1,33 @@
+class Solution {
+    int[][] dp = null;
+
+    public int computeMinOp(String str1, String str2, int e1, 
+                            int e2, int s1, int s2) 
+    {
+        if( s1 >= e1 && s2 >= e2 ) return 0;
+        if( s1 >= e1 ) return e2-s2;
+        if( s2 >= e2 ) return e1-s1;
+         if( dp[s1][s2] != -1 ) return dp[s1][s2];
+        if( str1.charAt(s1) == str2.charAt(s2) ) {
+            return dp[s1][s2]=computeMinOp(str1, str2, e1, e2, s1+1, s2+1);
+        }
+        int option1 = 1 + computeMinOp(str1, str2, e1, e2, s1, s2+1); // insert
+        int option2 = 1 + computeMinOp(str1, str2, e1, e2, s1+1, s2); //delete
+        int option3 = 1 + computeMinOp(str1, str2, e1, e2, s1+1, s2+1); //replace
+        return dp[s1][s2]=Integer.min(option1, Integer.min(option2,option3));
+    }
+    public int minDistance(String word1, String word2) {
+        int w1 = word1.length();
+        int w2 = word2.length();
+        if( w1 == 0 && w2 == 0 ) return 0;
+        if( w1 == 0 ) return w2;
+        if( w2 == 0 ) return w1;
+        dp = new int[w1][w2];
+        for(int i = 0; i < w1; i++ ) {
+            for(int j = 0; j < w2; j++ ) {
+                dp[i][j] = -1;
+            }
+        }
+        return computeMinOp(word1, word2,  w1,  w2, 0, 0);
+    }
+}
