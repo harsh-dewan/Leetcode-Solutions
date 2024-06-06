@@ -1,0 +1,28 @@
+class Solution {
+    public boolean isNStraightHand(int[] hand, int groupSize) {
+
+        HashMap<Integer,Integer> number = new HashMap<Integer,Integer>();
+        int arrSize = hand.length;
+        for(int i = 0; i < arrSize; i++){
+            number.put(hand[i],number.getOrDefault(hand[i],0)+1);
+        }
+        Arrays.sort(hand);
+        for(int index=0; index < arrSize; index++ ) {
+            int start = hand[index];
+            int limit = start+groupSize;
+            if( number.containsKey(start)) {
+                while( start < limit) {
+                    if( !number.containsKey(start) ) {
+                       // System.out.println("hand[index]: "+hand[index]+ " start: "+start);
+                        return false;
+                    }
+                    number.put(start,number.get(start)-1);
+                    if( number.get(start) == 0 ) number.remove(start);
+                    start += 1;
+                }
+            }
+        }
+        return true;
+        
+    }
+}
